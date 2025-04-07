@@ -15,7 +15,7 @@ class SeriesController extends Controller
 {
     public function index(Request $request)
     {   
-        $series =  Serie::query()->orderBy('nome', 'asc')->get();
+        $series =  Serie::query()->get();
         // O método all() é usado para obter todos os registros da tabela.
         // O método dd() "Dump and Die" é usado para depuração e exibe o conteúdo da variável e encerra a execução do script.
         
@@ -36,20 +36,20 @@ class SeriesController extends Controller
 
     public function store(Request $request)
     {
+        Serie::create($request->all());
+        // O método create() é usado para criar um novo registro no banco de dados.
+        /*
         $nomeSerie = $request->input('nome');
         $serie = new Serie();
         $serie->nome = $nomeSerie;
         $serie->save();
+        */
         // O método save() é usado para salvar o registro no banco de dados.
 
 
-        return redirect ('/series');
+        return to_route('series.index');
         // O método redirect() é usado para redirecionar o usuário para outra URL.
         // O método input() é usado para obter os dados enviados pelo formulário.
         // O método insert() é usado para inserir dados no banco de dados.
-    }
-    public function return() {
-        $series =  DB::select('SELECT nome FROM series;');
-        return view('series.index')-> with('series', $series);
     }
 }
