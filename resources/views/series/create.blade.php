@@ -1,5 +1,5 @@
 <x-layout title="Nova Série">
-    <form action="/series/salvar" method="post" class="card p-4 shadow-sm">
+    <form action="{{ route ('series.store')}}" method="post" class="card p-4 shadow-sm">
         @csrf
 
         <div class="mb-3">

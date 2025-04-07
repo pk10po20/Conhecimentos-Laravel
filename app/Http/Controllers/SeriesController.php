@@ -52,4 +52,8 @@ class SeriesController extends Controller
         // O método input() é usado para obter os dados enviados pelo formulário.
         // O método insert() é usado para inserir dados no banco de dados.
     }
+    public function destroy(Request $request)
+    {
+        dd($request->$serie);
+    }
 }
