@@ -21,13 +21,17 @@ Route::controller( SeriesController::class)->group(function () {
     Route::post('/series/salvar','store')
         ->name('series.store');
 });
+    Route::delete('/series/destroy/{id}', [SeriesController::class, 'destroy'])
+        ->name('series.destroy');
 */
-
-Route::resource('series', SeriesController::class)
-// O método resource() é usado para criar rotas RESTful para um controlador de recurso.
-    ->only([
-        'index', 'create', 'store'
-    ]);
-// O método only() é usado para especificar quais métodos do controlador devem ser registrados como rotas.
-Route::post('/series/destroy/{id}', SeriesController::class, 'destroy')
-    ->name('series.destroy');
+    // O método resource() é usado para criar rotas RESTful para um controlador de recurso.
+Route::resource('/series', SeriesController::class)
+        ->except(['show']);
+    
+    /*
+        ->only(['index', 'create', 'store', 'destroy', 'edit', 'update']);
+    
+        O método only() é usado para especificar quais métodos do controlador devem ser registrados como rotas.
+    
+        To open server in browser: php -S 127.0.0.1:8080 -t public 
+    */

@@ -3,18 +3,31 @@
         <h2 class="h4">Lista de Séries</h2>
         <a href="{{ route('series.create') }}" class="btn btn-primary">+ Nova Série</a>
     </div>
+    
+    @isset($mensagemSucesso)
+    <div class="alertsucess">
+        {{ $mensagemSucesso }}
+    </div>
+    @endisset
 
     <ul class="list-group shadow-sm">
         @foreach ($series as $serie) 
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                {{ $serie->nome }}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+    {{ $serie->nome }}
 
-                <form action="{{route('series.destroy', $serie->id)}}" method="post" class="d-flex align-items-center">
-                    <button class="btn btn-danger btn-sm">
-                        X
-                    </button>
-                <form>
-            </li>
+            <div class="d-flex align-items-center">
+                <a href="{{ route('series.edit', $serie->id) }}" class="btn btn-warning btn-sm me-2">
+                    E
+                </a>
+
+                <form action="{{ route('series.destroy', $serie->id) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger btn-sm">X</button>
+                </form>
+            </div>
+        </li>
+
         @endforeach
     </ul>
 </x-layout>
