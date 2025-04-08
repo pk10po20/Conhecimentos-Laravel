@@ -1,4 +1,4 @@
-<x-layout title="Séries">
+<x-layout title="{{ __('messages.app_name') }}">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="h4">Lista de Séries</h2>
         <a href="{{ route('series.create') }}" class="btn btn-primary">+ Nova Série</a>

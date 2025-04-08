@@ -3,20 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Serie;
+use App\Models\Series;
 use Illuminate\Support\Facades\DB;
-
-
-
-
-
+use App\Http\Requests\SeriesFormRequest;
 
 class SeriesController extends Controller
 {
     public function index(Request $request)
     {   
-        $series =  Serie::query()->get();
-        $mensagemSucesso = $request->session()->get('mensagem.sucesso');
+        $series =  Series::all();
+        $mensagemSucesso = session('mensagem.sucesso');
 
         // O método all() é usado para obter todos os registros da tabela.
         // O método dd() "Dump and Die" é usado para depuração e exibe o conteúdo da variável e encerra a execução do script.
@@ -38,9 +34,9 @@ class SeriesController extends Controller
         return view('series.create');
     }
 
-    public function store(Request $request)
+    public function store(SeriesFormRequest $request)
     {
-        $serie = Serie::create($request->all());
+        $serie = Series::create($request->all());
         
         return to_route('series.index')
             ->with('mensagem.sucesso', "Série '{$serie->nome}' adicionada com sucesso!");        
@@ -48,12 +44,11 @@ class SeriesController extends Controller
         // O método create() é usado para criar um novo registro no banco de dados.
         /*
         $nomeSerie = $request->input('nome');
-        $serie = new Serie();
+        $serie = new Series();
         $serie->nome = $nomeSerie;
         $serie->save();
         */
         // O método save() é usado para salvar o registro no banco de dados.
-
 
         return to_route('series.index');
         // O método redirect() é usado para redirecionar o usuário para outra URL.
@@ -62,7 +57,7 @@ class SeriesController extends Controller
         // Usar aspas duplas quando precisar adicionar variáveis dentro da string.
     } 
 
-    public function destroy(Serie  $series)
+    public function destroy(Series $series)
     {
         // O método find() é usado para encontrar um registro pelo ID.
         $series->delete();
@@ -71,14 +66,14 @@ class SeriesController extends Controller
             ->with('mensagem.sucesso', "Série '{$series->nome}' removida com sucesso!");
     }
 
-    public function edit(Serie $series)
+    public function edit(Series $series)
     {
         return view('series.edit')
             ->with('serie', $series);
         // O método edit() é usado para exibir o formulário de edição de uma série.        
     }
 
-    public function update(Serie $series, Request $request) 
+    public function update(Series $series, SeriesFormRequest $request) 
     {
         $series->fill($request->all());
         $series->save();
