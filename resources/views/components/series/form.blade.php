@@ -1,3 +1,4 @@
+<!--
 <form action="{{ $action }}" method="post" class="card p-4 shadow-sm">
         @csrf
 
@@ -15,3 +16,4 @@
 
         <button type="submit" class="btn btn-success">Adicionar</button>
     </form>
+-->

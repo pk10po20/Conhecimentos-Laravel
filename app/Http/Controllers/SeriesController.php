@@ -37,9 +37,21 @@ class SeriesController extends Controller
     public function store(SeriesFormRequest $request)
     {
         $serie = Series::create($request->all());
-        
-        return to_route('series.index')
-            ->with('mensagem.sucesso', "Série '{$serie->nome}' adicionada com sucesso!");        
+        for ($i = 1; $i < $request->SeasonsQty; $i++) {
+            $season = $serie->seasons()->crate([
+                'number' => $i,
+            ]);
+
+            for ($j = 1; $j < $request->episodesPerPerson; $j++) {
+                $season->episodes()->crate([
+                    'number' => $j,
+                ]);
+
+            }
+            
+            return to_route('series.index')
+                ->with('mensagem.sucesso', "Série '{$serie->nome}' adicionada com sucesso!");      
+        }
         // O método flash() é usado para armazenar dados na sessão por um único pedido. Exemplo, ao atualizar a página a mensagem é removida.
         // O método create() é usado para criar um novo registro no banco de dados.
         /*
