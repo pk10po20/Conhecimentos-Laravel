@@ -2,12 +2,17 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Facades\DB;
+use App\Models\Series;
+use App\Models\Season;
+use App\Models\Episode;
+
 class SeriesRepository
 {
     public function add(SeriesFormRequest $request)
     {
         {
-            $serie = DB::beginTransaction()(function () use ($request, &$serie) {       
+            $serie = DB::Transaction(function () use ($request):Series {       
                 $serie = Series::create($request->all());
                 $seasons = [];
                 for ($i = 1; $i <= $request->seasonsQty; $i++) {
