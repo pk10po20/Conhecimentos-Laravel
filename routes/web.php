@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SeriesController;
+use App\Http\Controllers\SeasonsController;
 
 Route::get('/', function () {
     return redirect('/series');
@@ -35,3 +36,5 @@ Route::resource('/series', SeriesController::class)
     
         To open server in browser: php -S 127.0.0.1:8080 -t public 
     */
+Route::get('/series/{series}/seasons', [SeasonsController::class, 'index'])
+    ->name('seasons.index');

@@ -2,26 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Season;
 
 class Series extends Model
 {
+    use HasFactory;
     protected $fillable = ['nome'];
-    // O atributo $fillable é um array que contém os campos que podem ser preenchidos em massa.
-    // Isso ajuda a proteger contra a atribuição em massa (mass assignment).
 
-    public function season()
+    public function seasons()
     {
-        return $this->hasMany(Season::class, 'series_id');
+        return $this->hasMany(Season::class, 'serie_id');
     }
 
     protected static function booted()
     {
-        self::addGlobalScope('ordered', function (Builder $queryBuilder)
-        {
-            $queryBuilder->orderBy('nome', 'asc');
+        self::addGlobalScope('ordered', function (Builder $queryBuilder) {
+            $queryBuilder->orderBy('nome');
         });
     }
 }
-

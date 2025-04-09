@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Series;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\SeriesFormRequest;
+use App\Models\Season;
+use App\Models\Episode;
+
 
 class SeriesController extends Controller
 {
@@ -36,22 +39,37 @@ class SeriesController extends Controller
 
     public function store(SeriesFormRequest $request)
     {
+        
         $serie = Series::create($request->all());
-        for ($i = 1; $i < $request->SeasonsQty; $i++) {
-            $season = $serie->seasons()->crate([
+        $seasons = [];
+        for ($i = 1; $i <= $request->seasonsQty; $i++) {
+            $seasons[] = [
+                'serie_id' => $serie->id,
                 'number' => $i,
-            ]);
-
-            for ($j = 1; $j < $request->episodesPerPerson; $j++) {
-                $season->episodes()->crate([
+            ];
+        }
+        Season::insert($seasons);
+        $serie->load('seasons');
+        
+        // O método insert() é usado para inserir dados no banco de dados. (Insere todos os arrays de uma vez no banco de dados)     
+        // O método create() é usado para criar um novo registro no banco de dados. (Insere os arrays um por um no banco de dados)
+        
+        $episodes = [];
+        foreach ($serie->seasons as $season) {
+            for ($j = 1; $j <= $request->episodesPerPerson; $j++) {
+                $episodes[]= [
+                    'season_id' => $season->id,
                     'number' => $j,
-                ]);
-
+                ];
             }
-            
+        }
+        
+        Episode::insert($episodes);
+        
+
             return to_route('series.index')
                 ->with('mensagem.sucesso', "Série '{$serie->nome}' adicionada com sucesso!");      
-        }
+        
         // O método flash() é usado para armazenar dados na sessão por um único pedido. Exemplo, ao atualizar a página a mensagem é removida.
         // O método create() é usado para criar um novo registro no banco de dados.
         /*
