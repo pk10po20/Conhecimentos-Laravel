@@ -5,7 +5,7 @@
                     Temporada {{ $season->number }}
 
                     <span class="">
-                        {{ $season->episodes->count() }}
+                        Eps. {{ $season->episodes->count() }}
                     </span>
                 </li>
             @endforeach
